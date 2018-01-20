@@ -39,4 +39,16 @@ class RotatingPointView(ctx:Context):View(ctx) {
             }
         }
     }
+    data class RotatingPoint(var x:Float,var y:Float,var r:Float) {
+        fun draw(canvas:Canvas,paint:Paint) {
+            paint.strokeWidth = r/10
+
+        }
+        fun update() {
+
+        }
+        fun toggleMode() {
+
+        }
+    }
 }
