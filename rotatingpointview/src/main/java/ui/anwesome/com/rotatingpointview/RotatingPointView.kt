@@ -58,11 +58,23 @@ class RotatingPointView(ctx:Context):View(ctx) {
     }
     data class RotatingPointState(var mode:Int = 0,var deg:Float = 0f,var deg2:Float = 0f) {
         fun update() {
-            deg += 5
-            if(mode == 1) {
-                deg2+=5
-                if(deg2 == 180f) {
-                    mode = 0
+            when(mode) {
+                0 -> {
+                    deg += 5
+                }
+                1 -> {
+                    deg2 += 5
+                    if(deg2 == 180f) {
+                        mode = 2
+                        deg += 180
+                    }
+                }
+                2 -> {
+                    deg2 -= 5
+                    if(deg2 < 0f) {
+                        deg2 = 0f
+                        mode = 0
+                    }
                 }
             }
         }
@@ -74,6 +86,7 @@ class RotatingPointView(ctx:Context):View(ctx) {
             paint.style = Paint.Style.FILL
             canvas.drawCircle(r,0f,r/20,paint)
             canvas.restore()
+            paint.strokeCap = Paint.Cap.ROUND
             paint.style = Paint.Style.STROKE
             canvas.save()
             canvas.drawArc(RectF(-r,-r,r,r),deg-deg2,2*deg2,false,paint)
