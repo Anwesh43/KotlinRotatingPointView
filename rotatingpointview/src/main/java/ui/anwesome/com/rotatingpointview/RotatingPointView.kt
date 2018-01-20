@@ -83,4 +83,23 @@ class RotatingPointView(ctx:Context):View(ctx) {
             }
         }
     }
+    data class Renderer(var view:RotatingPointView,var time:Int = 0) {
+        var rotatingPoint:RotatingPoint?=null
+        val animator = Animator(view)
+        fun render(canvas:Canvas,paint:Paint) {
+            if(time == 0) {
+                val w = canvas.width.toFloat()
+                val h = canvas.height.toFloat()
+                rotatingPoint = RotatingPoint(w/2,h/2,Math.min(w,h)/3)
+            }
+            rotatingPoint?.draw(canvas,paint)
+            time++
+            animator.animate {
+                rotatingPoint?.update()
+            }
+        }
+        fun handleTap() {
+            animator.startAnimating()
+        }
+    }
 }
