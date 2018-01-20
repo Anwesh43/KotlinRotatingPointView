@@ -40,15 +40,17 @@ class RotatingPointView(ctx:Context):View(ctx) {
         }
     }
     data class RotatingPoint(var x:Float,var y:Float,var r:Float) {
+        val state = RotatingPointState()
         fun draw(canvas:Canvas,paint:Paint) {
             paint.strokeWidth = r/10
-
+            paint.color = Color.parseColor("#283593")
+            state.draw(canvas,paint,x,y,r)
         }
         fun update() {
-
+            state.update()
         }
         fun toggleMode() {
-
+            state.toggleMode()
         }
     }
     data class RotatingPointState(var mode:Int = 0,var deg:Float = 0f,var deg2:Float = 0f) {
