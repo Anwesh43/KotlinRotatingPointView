@@ -10,6 +10,10 @@ import android.graphics.*
 class RotatingPointView(ctx:Context):View(ctx) {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     val renderer = Renderer(this)
+    var rotationCompleteListener:RotatingPointCompleteListener?=null
+    fun addRotationCompleteListener(completeListener: () -> Unit) {
+        rotationCompleteListener = RotatingPointCompleteListener(completeListener)
+    }
     override fun onDraw(canvas:Canvas) {
         canvas.drawColor(Color.parseColor("#212121"))
         renderer.render(canvas,paint)
@@ -49,15 +53,15 @@ class RotatingPointView(ctx:Context):View(ctx) {
             paint.color = Color.parseColor("#283593")
             state.draw(canvas,paint,x,y,r)
         }
-        fun update() {
-            state.update()
+        fun update(stopcb: () -> Unit) {
+            state.update(stopcb)
         }
         fun toggleMode() {
             state.toggleMode()
         }
     }
     data class RotatingPointState(var mode:Int = 0,var deg:Float = 0f,var deg2:Float = 0f) {
-        fun update() {
+        fun update(stopcb:()->Unit) {
             when(mode) {
                 0 -> {
                     deg += 5
@@ -112,7 +116,9 @@ class RotatingPointView(ctx:Context):View(ctx) {
             rotatingPoint?.draw(canvas,paint)
             time++
             animator.animate {
-                rotatingPoint?.update()
+                rotatingPoint?.update{
+                    view.rotationCompleteListener?.rotationCompleteListener?.invoke()
+                }
             }
         }
         fun handleTap() {
@@ -126,4 +132,5 @@ class RotatingPointView(ctx:Context):View(ctx) {
             return view
         }
     }
+    data class RotatingPointCompleteListener(var rotationCompleteListener:()->Unit)
 }
