@@ -78,6 +78,7 @@ class RotatingPointView(ctx:Context):View(ctx) {
                     if(deg2 < 0f) {
                         deg2 = 0f
                         mode = 0
+                        stopcb()
                     }
                 }
             }
