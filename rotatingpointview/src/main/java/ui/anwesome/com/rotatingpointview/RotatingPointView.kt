@@ -3,6 +3,7 @@ package ui.anwesome.com.rotatingpointview
 /**
  * Created by anweshmishra on 20/01/18.
  */
+import android.app.Activity
 import android.view.*
 import android.content.*
 import android.graphics.*
@@ -103,6 +104,13 @@ class RotatingPointView(ctx:Context):View(ctx) {
         }
         fun handleTap() {
             rotatingPoint?.toggleMode()
+        }
+    }
+    companion object {
+        fun create(activity:Activity):RotatingPointView {
+            val view = RotatingPointView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
