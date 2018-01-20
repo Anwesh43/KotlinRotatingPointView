@@ -19,4 +19,24 @@ class RotatingPointView(ctx:Context):View(ctx) {
         }
         return true
     }
+    data class Animator(var view:RotatingPointView,var animated:Boolean = false) {
+        fun animate(updatecb:()->Unit) {
+            if(animated) {
+                updatecb()
+                try {
+                    Thread.sleep(50)
+                    view.invalidate()
+                }
+                catch(ex:Exception) {
+
+                }
+            }
+        }
+        fun startAnimating() {
+            if(!animated) {
+                animated = true
+                view.postInvalidate()
+            }
+        }
+    }
 }
